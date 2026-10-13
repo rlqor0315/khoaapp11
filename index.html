@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#197677">
+<title>안전해(海) 앱 설치로 이동 중</title>
+<style>
+:root{--navy:#17324d;--teal:#197677;--blue:#536eb4}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:linear-gradient(145deg,#eaf3f5,#f7f9fc 60%,#eaf0f8);font-family:system-ui,-apple-system,"Malgun Gothic",sans-serif;color:#203040}
+.card{width:min(100%,480px);background:#fff;border-radius:24px;padding:34px 28px;text-align:center;box-shadow:0 18px 55px #18334d16}
+.mark{width:70px;height:70px;margin:0 auto 18px;border-radius:22px;display:grid;place-items:center;background:linear-gradient(135deg,var(--navy),var(--teal));color:#fff;font-size:31px;font-weight:800}
+h1{font-size:28px;letter-spacing:-.04em;margin:0 0 10px}
+p{color:#617281;line-height:1.7;font-size:14px}
+#message{margin:18px 0;padding:13px;border-radius:12px;background:#f1f7f7;color:#355e62;font-size:13px}
+a{display:block;padding:14px 16px;border-radius:12px;background:var(--teal);color:white;text-decoration:none;font-weight:750;margin-top:12px}
+a.secondary{background:#eef2f6;color:#263e50}
+.small{font-size:11px;color:#83909b;margin-top:22px}
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="mark" aria-hidden="true">海</div>
+  <h1>안전해(海) 앱 설치</h1>
+  <p>사용 중인 휴대전화에 맞는 앱스토어로 이동하고 있습니다.</p>
+  <div id="message" role="status">기기를 확인하는 중입니다…</div>
+  <a id="openStore" href="https://play.google.com/store/apps/details?id=com.khoa.osmm">앱스토어로 이동</a>
+  <a class="secondary" id="otherStore" href="https://apps.apple.com/kr/app/%EC%95%88%EC%A0%84%ED%95%B4-%E6%B5%B7-%EC%A1%B0%EC%84%9D%EC%98%88%EB%B3%B4-%EB%AC%BC%EB%95%8C%ED%91%9C-%ED%95%B4%EC%96%91%EC%95%88%EC%A0%84/id1135272936">다른 스토어 열기</a>
+  <div class="small">자동 이동이 되지 않으면 위 버튼을 눌러주세요.</div>
+</main>
+<script>
+(function () {
+  const androidUrl = "https://play.google.com/store/apps/details?id=com.khoa.osmm";
+  const iosUrl = "https://apps.apple.com/kr/app/%EC%95%88%EC%A0%84%ED%95%B4-%E6%B5%B7-%EC%A1%B0%EC%84%9D%EC%98%88%EB%B3%B4-%EB%AC%BC%EB%95%8C%ED%91%9C-%ED%95%B4%EC%96%91%EC%95%88%EC%A0%84/id1135272936";
+  const ua = navigator.userAgent || navigator.vendor || "";
+  const isAndroid = /android/i.test(ua);
+  const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const message = document.getElementById("message");
+  const openStore = document.getElementById("openStore");
+  const otherStore = document.getElementById("otherStore");
+  let target;
+
+  if (isAndroid) {
+    target = androidUrl;
+    message.textContent = "안드로이드 기기를 확인했습니다. Google Play로 이동합니다.";
+    openStore.textContent = "Google Play에서 설치";
+    otherStore.href = iosUrl;
+    otherStore.textContent = "아이폰용 App Store 열기";
+  } else if (isIOS) {
+    target = iosUrl;
+    message.textContent = "아이폰 또는 아이패드를 확인했습니다. App Store로 이동합니다.";
+    openStore.textContent = "App Store에서 설치";
+    otherStore.href = androidUrl;
+    otherStore.textContent = "안드로이드용 Google Play 열기";
+  } else {
+    target = null;
+    message.textContent = "휴대전화 기기를 자동으로 확인하지 못했습니다. 아래에서 스토어를 선택하세요.";
+    openStore.href = androidUrl;
+    openStore.textContent = "Android · Google Play";
+    otherStore.href = iosUrl;
+    otherStore.textContent = "iPhone · App Store";
+  }
+
+  if (target) {
+    openStore.href = target;
+    // Attempt redirect; visible buttons remain as fallback if browser blocks it.
+    window.setTimeout(function () { window.location.replace(target); }, 650);
+  }
+})();
+</script>
+</body>
+</html>
